@@ -200,7 +200,7 @@ String str = "ABC";
 
 - kotlin은 Java와 달리 비교연산자를 호출하면 compraeTo를 호출해준다.
 
-#### 
+
 
 #### 동등성, 동일성
 
@@ -219,3 +219,288 @@ String str = "ABC";
 #### 연산자 오버로딩
 
 - +연산을 plus() 메소드로 오버로딩 해서 직접 정의할 수 있다.
+
+
+
+## 05. 코틀린에서 조건문을 다루는 방법
+
+### if문
+
+- Java
+
+  - Java에서는 if-else는 Statement이다.
+
+- Kotlin
+
+  - Kotlin에서는 Expression이다.
+
+  - Kotlin에서는 If문이 값 하나를 의미한다.
+
+    
+
+### When 문
+
+Kotlin은 Java의 switch 문을 when을 이용하여 표현할 수 있다.
+
+- When문도 Expression이다.
+
+  ~~~kotlin
+  fun getGradeWithSwitch(score: Int): String {
+      return when (score / 10) {
+          in 90..99 -> "A"
+          in 80 .. 89 -> "B"
+          in 70..79 -> "C"
+          else -> "D"
+      }
+  }
+  ~~~
+
+  
+
+- if문과 동일하게 조건에서 타입을 확인하면 스마팅 캐스팅을 진행하여 준다.
+
+  ~~~kotlin
+  fun startsWithA(obj: Any): Boolean {
+      return when (obj) {
+          is String -> obj.startsWith("A")
+          else -> false
+      }
+  }
+  ~~~
+
+  
+
+- 조건문에 여러개의 조건을 넣을 수 있다.
+
+  ~~~kotlin
+  fun judgeNumber(number: Int) {
+      when (number) {
+          1, 0, -1 -> println("어디서 많이 본 숫자입니다.")
+          else -> println("1, 0, -1이 아닙니다.")
+      }
+  }
+  ~~~
+
+  
+
+- when에 값을 넣지 않아도 가능하다.
+
+  ~~~kotlin
+  fun judgeNumber2(number: Int) {
+      when {
+          number == 0 -> println("주어진 수는 0입니다.")
+          number % 2 == 0 -> println("주어진 수는 짝수입니다.")
+          else -> println("주어진 수는 홀수입니다.")
+      }
+  }
+  ~~~
+
+  
+
+## 06. 코를린에서 반복문을 다루는 방법
+
+### for each문
+
+- kotlin의 for each문은 :대신 In을 사용한다.
+
+  ```kotlin
+  val numbers = listOf(1, 2, 3)
+  for (number in numbers) {
+      println(number)
+  }
+  ```
+
+- 범위를 ..를 이용하여 지정할 수 있다.
+
+  ~~~kotlin
+  for (i in 1..3) {
+          println(i)
+  }
+  ~~~
+
+- 내려가는 경우에는 downTo를 사용한다.
+
+  ~~~kotlin
+  for (i in 3 downTo 1) {
+          println(i)
+  }
+  ~~~
+
+- 값의 증감범위는 step을 이용하여 설정한다.
+
+  ~~~kotlin
+  for (i in 1..5 step 2) {
+          println(i)
+  }
+  ~~~
+
+#### Progression과 Range
+
+- Progression
+  - 등차수열을 의미
+- Range
+  - Progression을 상속받는다.
+  - for(i in 1..3) 에서 1..3 부분의 타입은 Range이다.
+
+- downTo와 step 둘다 함수이다.
+  - 중위함수이다.
+
+
+
+## 07. 코틀린에서 예외를 다루는 법
+
+#### Try catch finally
+
+- Try-catch문도 Expression이기에 바로 return이 가능하다.
+
+  ~~~kotlin
+  fun parseIntOrThrow2(str: String): Int? {
+      return try {
+          str.toInt()
+      } catch (e: NumberFormatException) {
+          null
+      }
+  }
+  ~~~
+
+
+
+#### Checked Exception과 Unchecked Exception
+
+- Java와 달리 Checked Exception에 대해 throw를 하지 않아도 오류가 발생하지 않는다.
+
+- Kotlin에서는 Checked Exception과 Unchecked Exception을 **구분하지 않는다.**
+
+  ~~~kotlin
+  fun readFile() {
+          val currentFile = File("./taewoo")
+          val file = File(currentFile.absolutePath + "/a.txt")
+          val reader = BufferedReader(FileReader(file))
+          println(reader.readLine())
+          reader.close()
+      }
+  ~~~
+
+
+
+#### Try with resources
+
+- 코틀린에서는 try with resources 구문이 없다.
+
+  - Java에서의 try with resources 구문
+
+    ~~~java
+    try(BufferedReader reader = new BufferedReader(new FileReader(path))){
+    //...
+    }
+    ~~~
+
+  - Kotlin에서는 use를 이용하여 처리한다.
+
+    ~~~kotlin
+    BufferedReader(FileReader(path)).use { reader ->
+                println(reader.readLine())
+    }
+    ~~~
+
+
+
+## 08. 코틀린에서 함수를 다루는 법
+
+#### 함수선언 문법
+
+- 아래와 같이 if문을 바로 return 가능
+
+  ~~~kotlin
+  fun max(a: Int, b: Int): Int {
+      return if (a > b) {
+          a
+      } else {
+          b
+      }
+  }
+  ~~~
+
+- if문은 expression이기에 블럭 자체를 = 로 변경 가능
+
+  ~~~kotlin
+  fun max(a: Int, b: Int): Int =
+      if (a > b) {
+          a
+      } else {
+          b
+      }
+  ~~~
+
+- return 타입을 추론이 가능한 경우에는 생략이 가능하다.
+
+  - 함수를 쓸 때 줄괄호 대신 "="을 사용했기에 생략이 가능하다.
+
+  ~~~kotlin
+  fun max(a: Int, b: Int) = if (a > b) {
+      a
+  } else {
+      b
+  }
+  ~~~
+
+- 중괄호도 생략이 가능하다.
+
+  ~~~kotlin
+  fun max(a: Int, b: Int) = if (a > b) a else b
+  ~~~
+
+  
+
+#### default parameter
+
+- kotlin은 Java와는 달리 default paramter를 사용할 수 있다.
+
+  ~~~kotlin
+  fun repeat(str: String, num: Int = 3, useNewLine: Boolean = true) {
+      for (i in 1..num) {
+          if (useNewLine) {
+              println(str)
+          } else {
+              print(str)
+          }
+      }
+  }
+  ~~~
+
+
+
+#### named arugment 
+
+- 함수를 호출할 때 파라미터중에 내가 설정하고 싶은 파라미터만 설정이 가능하다.
+
+  ~~~kotlin
+  repeat("Hello World", useNewLine = false)
+  ~~~
+
+  - **허나 Java 함수를 쓸 때는 named arugment를 사용할 수 없다.**
+
+
+
+#### 같은 타입의 여러 파라미터 받기(가변인자)
+
+- Kotlind에서도 가변인자가 가능하다.
+
+  - Java의 String... 역할을 한다.
+  - kotlin에서는 vararg을 붙여줘야 한다.
+
+  ~~~kotlin
+  fun printAll(vararg strings: String) {
+      for (str in strings) {
+          println(str)
+      }
+  }
+  
+  //호출부
+  printAll("A", "B", "C")
+  val array = arrayOf("A", "B", "C")
+  printAll(*array)
+  ~~~
+
+  - 호출 시에 array를 넘길 때는 인자 앞에 *를 붙여줘야 한다.
+    - 왜냐하면 *(spread 연산자)이 배열안의 원소들을 ,로 붙여서 넘겨주는 역할을 하기 때문이다.
