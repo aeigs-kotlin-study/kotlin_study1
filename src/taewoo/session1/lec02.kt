@@ -1,4 +1,4 @@
-package taewoo.sesson1
+package taewoo.session1
 
 fun main() {
     val person = Person(null, null)

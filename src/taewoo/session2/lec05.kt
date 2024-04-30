@@ -1,4 +1,4 @@
-package taewoo.sesson2
+package taewoo.session2
 
 fun validateScoreIsNotNegative(score: Int) {
     if (score !in 0..100) {

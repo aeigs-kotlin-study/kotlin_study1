@@ -1,4 +1,4 @@
-package taewoo.sesson2
+package taewoo.session2
 
 fun main() {
     println(max(1, 2))

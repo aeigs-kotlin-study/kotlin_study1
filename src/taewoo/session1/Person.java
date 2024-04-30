@@ -1,4 +1,4 @@
-package taewoo.sesson1;
+package taewoo.session1;
 
 public class Person {
     private final String name;

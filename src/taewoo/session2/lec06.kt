@@ -1,4 +1,4 @@
-package taewoo.sesson2
+package taewoo.session2
 
 fun main() {
     val numbers = listOf(1, 2, 3)

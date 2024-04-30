@@ -1,4 +1,4 @@
-package taewoo.sesson2;
+package taewoo.session2;
 
 import java.io.BufferedReader
 import java.io.File
