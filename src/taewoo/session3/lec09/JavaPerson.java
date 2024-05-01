@@ -1,4 +1,4 @@
-package taewoo.session3;
+package taewoo.session3.lec09;
 
 public class JavaPerson {
 

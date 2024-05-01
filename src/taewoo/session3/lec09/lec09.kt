@@ -1,4 +1,4 @@
-package taewoo.session3
+package taewoo.session3.lec09
 
 class Person(
     val name: String = "홍길동",
