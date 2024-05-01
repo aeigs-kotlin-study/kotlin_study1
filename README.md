@@ -504,3 +504,123 @@ Kotlin은 Java의 switch 문을 when을 이용하여 표현할 수 있다.
 
   - 호출 시에 array를 넘길 때는 인자 앞에 *를 붙여줘야 한다.
     - 왜냐하면 *(spread 연산자)이 배열안의 원소들을 ,로 붙여서 넘겨주는 역할을 하기 때문이다.
+
+
+
+## 09. 코틀린에서 클래스를 다루는 방법
+
+### 생성자
+
+#### 주생성자
+
+```kotlin
+class Person(
+    val name: String = "홍길동",
+    var age: Int = 3
+) {
+  init {
+        if (age <= 0) {
+            throw IllegalArgumentException("나이는 ${age}일 수 없습니다.")
+        }
+
+        println("기본생성자")
+    }
+}
+```
+
+- 주생성자는 필수이다.
+- 멤버변수와 생성자를 Class의 Body에 넣는 것이 아니라 위와같이 간단하게 정의할 수 있다.
+- **init**키워드를 이용하여 기본생성자에 Body를 정의할 수 있다.
+
+#### 부생성자
+
+~~~kotlin
+constructor(name: String) : this(name, 1)
+
+constructor(): this("김태우")
+~~~
+
+- Body 안에 주생성자가 아닌 새로이 정의한 생성자를 부생성자라한다.
+
+- 부생성자는 결국엔 기본생성자를 호출해야 한다.
+
+- 생성자가 호출되는 순서는 역으로 호출된다
+
+  ~~~kotlin
+  init {
+    if (age <= 0) {
+        throw IllegalArgumentException("나이는 ${age}일 수 없습니다.")
+    }
+    println("기본생성자")
+  }
+  
+  constructor(name: String) : this(name, 1){
+      println("첫번째 생성자")
+  }
+  
+  constructor(): this("김태우"){
+      println("두번째 생성자")
+  }
+  
+  fun main() {
+      val p = Person() // <- 두번째 생성자를 호출했지만, 막상 출력을 보면 기본생성자부터 호출이된다.
+  }
+  
+  기본생성자
+  첫번째 생성자
+  두번째 생성자
+  ~~~
+
+
+
+#### 주의 사항
+
+- 부생성자를 사용하기보다는 default parameter를 활용할 것
+  - **객체를 받아야하는 경우에도 부생성자를 사용하기 보단, 정적 Factory Method를 사용하는 것을 추천**
+
+
+
+### 프로퍼티
+
+- 코틀린에서는 맴버 변수를 만들면 property를 만들지 않아도 자동으로 생성해준다.
+
+  ~~~kotlin
+  class Person(
+      val name: String = "홍길동",
+      var age: Int = 3
+  ) 
+  
+  fun main() {
+  	val p = Pesron();
+  	println(p.name);
+  	println(p.age);
+  }
+  ~~~
+
+  - main 함수를 보면 멤버변수에 직접 접근한 것 처럼 보이지만, 동작할 때는 getter를 호출해준다.
+
+- 실무에서는 거의 대부분은 Setter를 막아둔다. 그래서 해당방법에 대해서 찾아봤다.
+
+  ~~~kotlin
+  class Person(
+      val name: String = "홍길동",
+      age: Int = 3
+  ) {
+      var age = age
+          private set
+  	//...
+    
+    	fun updateAge(age: Int) {
+          this.age = age
+      }
+  }
+  ~~~
+
+  - 생성자에서는 변수를 선언하지 않고 Body에서 변수를 선언해준다.
+  - set에 대해서만은 private으로 막아둔다.
+    - set을 막는 이유는 무분별한 값의 변경을 막기 위해서다, set을 남용하게되면 값의 변화를 추적하기 매우 어렵기 때문이다.
+    - updateAge등을 통해 직관적인 이름을 통해 메소드를 만든다.
+
+
+
+## 10. 코틀린에서 상속을 다루는 방법
