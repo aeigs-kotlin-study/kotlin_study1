@@ -624,3 +624,145 @@ constructor(): this("김태우")
 
 
 ## 10. 코틀린에서 상속을 다루는 방법
+
+### 상속
+
+#### 구조
+
+<img src="/Users/xodn/Downloads/IMG_0A3D12853509-1.jpeg" alt="IMG_0A3D12853509-1" style="zoom:30%;" />
+
+#### 추상클래스
+
+~~~kotlin
+abstract class Animal(
+    protected val species: String,
+    protected open val legCount: Int
+) {
+    abstract fun move();
+}
+~~~
+
+- legCounter의 getter를 오버라이딩 하기 위해서는 추상프로퍼티가 아니라면  open해두어야 한다.
+
+#### 구현클래스
+
+- 클래스 상속 시 extends가 아닌 : 를 이용하여 상속한다.
+- 상속 시 무조건 부모클래스의 생성자를 호출해준다.
+- 자바에서는 @Override 어노테이션을 사용한 것과 달리 kotlin에서는 override 키워드를 사용하면 된다.
+
+**Cat**
+
+~~~kotlin
+class Cat(species: String)
+    : Animal(species, 4) {
+    override fun move() {
+        println("고양이가 사뿐사뿐 걸어갑니다.")
+    }
+}
+~~~
+
+**Penguin** 
+
+~~~kotlin
+class Penguin(spices: String)
+    : Animal(spices, 2) {
+
+    private val wingCount = 2;
+
+    override fun move() {
+        println("펭귄은 뒤뚱뒤뚱 걸어갑니다.")
+    }
+
+    override val legCount:Int
+        get() = super.legCount + wingCount
+
+}
+~~~
+
+
+
+#### 인터페이스
+
+<img src="/Users/xodn/Downloads/IMG_C63E5D5F5C94-1.jpeg" alt="IMG_C63E5D5F5C94-1" style="zoom:33%;" />
+
+~~~kotlin
+// Flyable.kt
+interface Flyable {
+
+    fun act(){
+        println("파닥 파닥")
+    }
+  
+  	fun fly()
+}
+
+// Swimable.kt
+interface Swimable {
+    fun act(){
+        println("어푸 어푸")
+    }
+  
+}
+~~~
+
+- kotlin에서는 default 키워드를 사용하지 않아도 default 메소드를 사용할 수 있다.
+
+- 추상메소드를 사용할 거면 그냥 선언하면 된다.
+
+  
+
+#### 구현 클래스
+
+~~~kotlin
+class Penguin(spices: String) : Animal(spices, 2), Flyable, Swimable {
+ 		//...
+  
+ 		override fun act() {
+        super<Flyable>.act()
+        super<Swimable>.act()
+    }
+  
+  	override fun fly() {
+        println("하늘을 날아요")
+    }
+}
+~~~
+
+- 중복되는 인터페이스를 특정할 때는 super<타입>.메소드()를 이용한다.
+
+
+
+
+
+### 주의 사항
+
+- **상위 클래스를 설계할 때는 생성자 또는 초기화 블록에 사용되는 프로퍼티에는 open을 피해야 한다.**
+
+  ~~~kotlin
+  open class Base(
+      open val number: Int = 100
+  ){
+      init {
+          println("Base Class")
+          println(number)
+      }
+  }
+  
+  class Derived(
+      override val number: Int
+  ) : Base(number) {
+      init {
+          println("Derived class")
+          println(number)
+      }
+  }
+  ~~~
+
+  - 자식 객체가 생성 될 때, 부모클래스의 생성자가 먼저 호출하게된다. 
+  - 부모 클래스에서 멤버를 참조할 때, 자식 클래스의 멤버를 가져온다
+    - 허나 아직 자식 클래스의 맴버가 초기화가 되지 않았기에 0이 출력된다.
+
+- **추상 멤버가 아니라면 기본적으로 오버라이드가 불가능하다.**
+
+  - open을 사용해줘야 한다.
+  - 허나 Java에서는 그냥 Override해줘도 된다.
