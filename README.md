@@ -766,3 +766,38 @@ class Penguin(spices: String) : Animal(spices, 2), Flyable, Swimable {
 
   - open을 사용해줘야 한다.
   - 허나 Java에서는 그냥 Override해줘도 된다.
+
+
+
+## 11. 접근제어를 다루는 법
+
+<img src="/Users/xodn/Library/Application Support/typora-user-images/image-20240501152430111.png" alt="image-20240501152430111" style="zoom:40%;" />
+
+
+
+### Top-level method
+
+- class가 아닌 파일 최상단에 메소드를 정의할 수 있다.
+- 이렇게하면 Java에서의 static Method와 동일한 역할을 한다.
+
+**StringUtils.kt**
+
+~~~kotlin
+fun isDirectoryPath(path: String): Boolean = path.endsWith("/")
+
+fun isLowerCase(c: Char?): Boolean? = c?.isLowerCase()
+~~~
+
+
+
+**main.kt**
+
+~~~kotlin
+fun main(){
+    isDirectoryPath("dfdf")
+    isLowerCase('a')
+}
+~~~
+
+
+
