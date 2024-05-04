@@ -801,3 +801,55 @@ fun main(){
 
 
 
+## 12. object 키워드를 다루는법
+
+### object
+
+- java에서의 static 역할을 하는 키워드이다.
+  - static
+    - 클래스 정의 시 정적으로 인스턴스끼리 메소드나 값을 공유
+    - static으로 선언한 클래스, 변수, 메소드들은 method area에 저장된다.
+  - companion object
+    - 클래스와 동행하는 유일한 오브젝트
+    - companion object도 하나의 객체로서 이름을 지정할 수 있다.
+    - 클래스가 메모리에 올라갈 때, 동시에 companion object가 인스턴스로서 힙에 올라간다.
+    - object 키워드는 자바의 static 키워드와 new 키워드를 대신한다. **클래스 정보 적재와 객체 선언이 동시에** 이루어진다.
+  - java에서 object 를 사용하려면, @JvmStaic을 붙여야한다.
+
+#### const
+
+- 컴파일 시 변수에 값을 할당하는 키워드이다.
+- 이와는 반대로 val 또는 var은 런타임시에 값이 할당된다.
+- primitive type과 String 타입에만 사용가능하다.
+
+
+
+### Singleton
+
+- 싱글톤은 디자인 패턴이다.
+- 싱글톤은 인스턴스 하나만을 생성하여, 해당 인스턴스로만 런타임 시 동작하게하는 패턴이다.
+- kotlin에서는 object keyword를 통해서 생성만 하면 된다.
+- 스프링의 Bean 객체들이 싱글톤으로 운영된다.
+
+
+
+### 익명클래스
+
+- 이름이 없는 객체를 익명클래스라한다.
+
+- 한번만 사용하고 버려지는 클래스이다.
+
+  ~~~kotlin
+  moveSomething(object : Movable {
+          override fun move() {
+              println("터벅 터벅")
+          }
+  
+          override fun fly() {
+              println("파닥 파닥")
+          }
+      })
+  ~~~
+
+  - 코드를 보면 Movable interface를 코드 내에서 구현하여 사용한다.
+  - 서술한 것과 같이 한번만 쓰고 버려질 객체이기에 코드내에서 구현하여 유지보수 성을 높인다.
