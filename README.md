@@ -869,3 +869,41 @@ fun main(){
 
 
 ## 14. 다양한 클래스를 다루는 방법
+
+### Data Class
+
+- DTO와 같은 클래스
+
+- Java와 달리 toString, HashCode, Equals를 구현하거나 롬복을 이용한 어노테이션을 붙이지 않아도 된다.
+  - kotlin에서 해당 메소드들은 자동으로 생성해준다.
+
+### Enum Class
+
+- 인터페이스를 구현할 수 없다.
+
+- when 키워드를 쓸 때 더욱 편리하게 코드를 작성할 수 있다.
+
+  ~~~kotlin
+  fun handleCountry(country: Country): String {
+      return when (country) {
+          Country.KOREA -> "한국입니다"
+          Country.AMERICA -> "미국입니다."
+      }
+  }
+  ~~~
+
+  - Country에 정의되어 있는 데이터에 대해서만 분기가 일어나므로 else를 구현할 필요가 없다.
+
+
+
+### Sealed Class, Sealed Interface
+
+- 컴파일 타임 때 하위 클래스의 타입을 모두 기억한다.
+  - 즉 런타임 때 클래스 타입이 추가될 수 없다.
+    - 라이브러리를 임포트하여 하위클래스를 구현하는것을 강의에서 런타임이라고 서술하고 있다.
+  - 그러므로 컴파일러는 상위클래스의 모든 하위클래스들을 알고 있다.
+  - when 을 사용할 시 하위클래스들을 모두 알고 있기 때문에 else 분기를 구현하지 않아도 된다.
+- 하위 클래스는 같은 패키지에 있어야 한다.
+- sealed 클래스는 추상클래스로 직접 인스턴스 생성이 불가능하다.
+
+- sealed 클래스에 대해서는 java에서 상속을 받지 못한다.
